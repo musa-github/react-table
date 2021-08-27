@@ -1,6 +1,7 @@
 
 import React, { useMemo } from 'react';
 import { useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
+import CheckBox from './CheckBox';
 import { COLUMNS } from "./column";
 import GlobalFilter from './GlobalFilter';
 import mock_data from "./MOCK_DATA";
@@ -35,8 +36,10 @@ import "./table.css";
 
    //nothing need to destucture here for sorting
    state,
-   setGlobalFilter
+   setGlobalFilter,
    // this two thing have to destucture here
+allColumns,
+getToggleHideAllColumnsProps
 
       }=tableInstance
 
@@ -44,9 +47,20 @@ import "./table.css";
  
    return (
      <>
+<div style={{display:"flex", }}>
+     <CheckBox  {...getToggleHideAllColumnsProps()}/> Toggle all
+     { allColumns.map(column=>(
+         <div key={column.id} >
+             <label>
+                 <input type="checkbox" {...column.getToggleHiddenProps()}/>
+                {column.Header}
+             </label>
+         </div>
+     ))} {/* for hiding column*/}
      <GlobalFilter 
      filter={globalFilter} 
-     setFilter={setGlobalFilter}/>
+     setFilter={setGlobalFilter}/>{/* this is for filtering */}
+     </div>
      
      <table {...getTableProps()} >
        <thead>
